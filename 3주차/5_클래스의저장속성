@@ -1,0 +1,61 @@
+### 저장속성
+-  값이 저장되는 일반적인 속성을 저장속성이라고 함
+- 저장속성은 구조체 클래스 동일하다
+- let, var 로 선언이 가능하다
+- 저장속성은 각 속성자체가 고유의 메모리를 가지고 있다.
+- 객체 초기화시 각 저장속성은 반드시 값을 가져야함
+```swift
+struct Bird{
+	var name : String // 저장속성
+	var weight : Double // 저장속성
+
+	init (name : String, weight : Double){ //기본값이 없으면 생성자를 통해 초기화 해야함
+		self.name = name
+		self.weight = weight
+	}
+
+	func fly(){
+		print("날다")
+	}
+}
+
+var aBird = Bird(name: "참새" , weight : 0.2) 
+
+var name = aBird.name;
+
+```
+### 지연 저장 속성
+
+- 해당 속성의 초기화를 지연시키는 속성
+- 인스턴스가 초기화 되는 시점에 해당 속성이 값을 갖고 초기화 되는 것이 아니라  해당 속성에 접근하는 순간 개별적으로 초기화됨
+- let 은 선언될수 없고, var 만 선언가능
+- 지연저장 속성은 기본 값을 셋팅해야함. 아니면 함수 실행문  같은 표현식을 위치시킬 수 있다
+```swift
+struct Bird{
+	var name : String // 저장속성
+	lazy var weight : Double = 0.2 //초기화 값을 셋팅해야함
+	//lazy var weight : Double = doSomething() // 이렇게도 가능
+
+	init (name : String){ //기본값이 없으면 생성자를 통해 초기화 해야함
+		self.name = name
+	}
+
+	func fly(){
+		print("날다")
+	}
+
+	lazy var b : Int = { // 다른 속성을 이용해야할때. 다른 저장속성이 의존해야만 할때)
+		return a * 10
+	}()
+}
+
+func doSomething()->Double{
+	return 0.2
+}
+
+var bBird = Bird(name:"새")
+bBird.weight //<== 인스턴스가 초기화 되는 시점이 아니라 해당 변수에 접근하는 시점에 초기화
+```
+- 메모리 공간을 많이 차지 하는 이미지등의 속성을 저장할때 메모리 낭비를 막기 위해 지연 저장 속성을 사용한다.
+- 다른 저장속성을 이용해야할때 초기화 시점에 동시 메모리 저장되므로, 어떤 한가지 속성이 다른 속성에 접근할 수 없다
+- 그렇지만 지연 저장 속성을 이용하는 경우 지연으로 저장된 속성은 먼저 초기화된 속성에 접근 할 수 있다.
