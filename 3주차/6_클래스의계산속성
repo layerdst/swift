@@ -1,0 +1,110 @@
+### 클래스의 계산속성
+- 클래스내 메소드가 저장 속성에 의한 결과를 계산하여 반환하는 메소드의 경우
+- 저장속성에 메소드를  담아 사용하므로, 외부에서 보기에 명확하고 읽기 쉬움
+- 계산속성은 속성형태를 가진 메소드로서, 실제 메모리 공간을 가지지 않는다.
+- 구조체, 클래스, 열거형에 구현이 가능
+- 항상 변하는 값이므로 var 로 선언이 되어야한다.
+
+```swift
+class Person{
+	var birth : Int = 0;
+
+	func getAge() -> Int {
+		return 2021 - birth
+	}
+
+	func setAge(_ age : Int){
+		self.birth = 2021 - age
+	}
+}
+```
+
+- get 블록은 반드시 구현해야함
+```swift
+class Person{
+	var birth : Int = 0;
+
+	var age : Int {
+		get {
+			return 2021 - birth
+		}
+
+		set(age){
+			self.birth = 2021 - age
+		}
+	}
+}
+
+var p1 = Person()
+p1.birth = 2000
+
+p1.age  // getAge -- 21
+p1.age = 22 // setAge -- birth = 1999
+
+```
+
+- get 블록만 구현시 get 블록을 생략할 수 있다.
+```swift
+	var age : Int {  // Get 블럭만 구현할 경우 생략하여도 됨
+		return 2021 - birth
+	}
+```
+
+- 다른 예제
+```swift
+class Person{
+	var name : String = "사람"
+	var height : Double = 160.0
+	var weight : Double = 60.0
+
+	func calculatorBMI() -> Double{
+		let bmi = weight / (height * height) * 10000
+		return bmi
+	}
+}
+```
+
+
+- 계산속성으로 바꾸어 구현하기 - Getter
+```swift
+var bmi : Double {
+	get {
+		return weight / (height * height) * 10000
+	}
+}
+
+```
+
+- 계산속성으로 바꾸어 구현하기 - Getter 블록 생략 (get-only, read-only)
+```swift
+var bmi : Double {
+	return weight / (height * height) * 10000
+}
+```
+
+- 계산속성으로 바꾸어 구현하기 - Getter, Setter
+```swift
+var bmi : Double {
+	get {
+		return weight / (height * height) * 10000
+	}
+
+	set(bmi){
+		weight = bmi * height * height  / 10000
+	}
+}
+```
+
+- Setter 의 파라미터 생략법 - newValue
+```swift
+var bmi : Double {
+	get {
+		return weight / (height * height) * 10000
+	}
+
+	set{ // bmi 를 생략하고 newValue 를 입력
+		weight = newValue * height * height  / 10000
+	}
+}
+```
+
